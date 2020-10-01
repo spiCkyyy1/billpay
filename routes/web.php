@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/', function () {
-        return redirect()->route('home');
+        return redirect()->route('company');
     });
 
     Route::get('/admin/dashboard', 'HomeController@index')->name('home');
@@ -42,4 +42,21 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/admin/categories/delete', 'CategoriesController@delete')->name('categories.delete');
     Route::post('/admin/categories/get', 'CategoriesController@edit')->name('categories.get');
     Route::post('/admin/categories/update', 'CategoriesController@update')->name('categories.update');
+
+    Route::get('/admin/companies', function () {
+        return view('admin.companies.index');
+    })->name('admin.companies');
+
+    Route::post('/admin/companies/all', 'CompanyController@index')->name('admin.companies.search');
+    Route::post('/admin/companies/approve', 'CompanyController@approve')->name('admin.companies.approve');
+    Route::post('/admin/companies/disapprove', 'CompanyController@disapprove')->name('admin.companies.disapprove');
+    Route::post('/admin/companies/delete', 'CompanyController@delete')->name('admin.companies.delete');
 });
+
+Route::get('/company', function () {
+    $companies = new \App\Company;
+    $companies = $companies->where('status', 1)->get();
+    return view('company.add', compact('companies'));
+})->name('company');
+
+Route::post('/company/save', 'CompanyController@store')->name('company.add');

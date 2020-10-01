@@ -81,20 +81,20 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/views/admin/categories/vue.js":
-/*!*************************************************!*\
-  !*** ./resources/views/admin/categories/vue.js ***!
-  \*************************************************/
+/***/ "./resources/views/admin/companies/vue.js":
+/*!************************************************!*\
+  !*** ./resources/views/admin/companies/vue.js ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 new Vue({
-  el: '#categories_container',
+  el: '#companies_container',
   data: {
     dataLoaded: false,
     isBusy: false,
@@ -104,49 +104,47 @@ new Vue({
     fields: [{
       key: 'id',
       label: 'ID'
-    }, 'name', 'slug', 'status', 'Actions'],
-    getCategoriesUrl: App_url + '/all',
-    createCategoryUrl: App_url + '/create',
-    deleteCategoryUrl: App_url + '/delete',
-    editCategoryUrl: App_url + '/get',
-    updateCategoryUrl: App_url + '/update',
-    categoryId: '',
-    categoryName: '',
-    categorySlug: '',
-    categoryStatus: 'enabled',
-    errorMessages: [],
-    errorMessage: '',
-    successMessage: '',
-    categories: [],
-    categoriesTable: {
+    }, 'name', 'country', 'state', 'city', {
+      key: 'zip_code',
+      label: 'Zip Code'
+    }, 'email', {
+      key: 'paypal_id',
+      label: 'Paypal ID'
+    }, 'status', 'Actions'],
+    getCompaniesUrl: App_url + '/all',
+    deleteCompanyUrl: App_url + '/delete',
+    approveCompanyUrl: App_url + '/approve',
+    disapproveCompanyUrl: App_url + '/disapprove',
+    companies: [],
+    companiesTable: {
       searchQuery: '',
       searching: false
     },
     orderBy: 'DESC',
-    categoriesMeta: {}
+    companiesMeta: {}
   },
   mounted: function mounted() {
-    this.applyCategoriesFilter();
+    this.applyCompaniesFilter();
   },
   watch: {
-    'categoriesMeta.current_page': function categoriesMetaCurrent_page(val) {
-      this.loadCategoriesPaginatedData();
+    'companiesMeta.current_page': function companiesMetaCurrent_page(val) {
+      this.loadCompaniesPaginatedData();
     }
   },
   methods: {
-    loadCategoriesPaginatedData: function loadCategoriesPaginatedData() {
-      this.applyCategoriesFilter(this.getCategoriesUrl + '?page=' + this.categoriesMeta.current_page);
+    loadCompaniesPaginatedData: function loadCompaniesPaginatedData() {
+      this.applyCompaniesFilter(this.getCompaniesUrl + '?page=' + this.companiesMeta.current_page);
     },
     getOrderByResult: function getOrderByResult(orderBy) {
       this.orderBy = orderBy;
-      this.applyCategoriesFilter(false);
+      this.applyCompaniesFilter(false);
     },
     resetFilter: function resetFilter() {
-      this.categoriesTable.searchQuery = "";
+      this.companiesTable.searchQuery = "";
       this.orderBy = 'DESC';
-      this.applyCategoriesFilter();
+      this.applyCompaniesFilter();
     },
-    applyCategoriesFilter: function applyCategoriesFilter() {
+    applyCompaniesFilter: function applyCompaniesFilter() {
       var _this = this;
 
       var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
@@ -154,17 +152,17 @@ new Vue({
       this.isBusy = true;
 
       if (url == false) {
-        url = this.getCategoriesUrl;
+        url = this.getCompaniesUrl;
       }
 
       axios.post(url, {
-        "SearchQuery": this.categoriesMeta.searchQuery,
+        "SearchQuery": this.companiesTable.searchQuery,
         orderBy: this.orderBy
       }).then(function (response) {
         if (response) {
           if (response.data.msg == 'Success') {
-            _this.categories = response.data.data;
-            _this.categoriesMeta = response.data.meta;
+            _this.companies = response.data.data;
+            _this.companiesMeta = response.data.meta;
             _this.processing = false;
             _this.isBusy = false;
           }
@@ -174,138 +172,72 @@ new Vue({
         _this.isBusy = false;
       });
     },
-    showAddModal: function showAddModal() {
-      $("#addCategoryModal").modal('show');
-      this.categoryName = '';
-      this.categorySlug = '';
-      this.categoryStatus = 'enabled';
-      this.successMessage = '';
-      this.errorMessage = '';
-      this.errorMessages = [];
-    },
-    createCategory: function createCategory() {
+    approveCompany: function approveCompany(companyId) {
       var _this2 = this;
 
-      this.processing = true;
-      axios.post(this.createCategoryUrl, {
-        name: this.categoryName,
-        slug: this.categorySlug,
-        status: this.categoryStatus
-      }).then(function (response) {
-        if (response) {
-          _this2.processing = false;
-
-          if (response.data.msg == 'Category Created Successfully.') {
-            var context = _this2;
-            _this2.errorMessages = [];
-            _this2.successMessage = '';
-            _this2.successMessage = response.data.success;
-            _this2.categoryName = '';
-            _this2.categorySlug = '';
-            _this2.categoryStatus = 'enabled';
-
-            _this2.applyCategoriesFilter(false);
-
-            setTimeout(function () {
-              context.successMessage = '';
-              $("#addCategoryModal").modal('hide');
-            }, 1000);
-          }
-
-          if (response.data.code == 219) {
-            _this2.errorMessages = [];
-            _this2.errorMessages = response.data.data;
-          }
-        }
-      });
-    },
-    editCategory: function editCategory(categoryId) {
-      var _this3 = this;
-
-      this.categoryId = categoryId;
-      this.errorMessages = [];
-      axios.post(this.editCategoryUrl, {
-        categoryId: categoryId
+      axios.post(this.approveCompanyUrl, {
+        companyId: companyId
       }).then(function (response) {
         if (response) {
           if (response.data.msg == 'Success') {
-            _this3.categoryName = response.data.data.name;
-            _this3.categorySlug = response.data.data.slug;
-            _this3.categoryStatus = response.data.data.status;
-            _this3.successMessage = '';
-            $("#editCategoryModal").modal('show');
+            Swal.fire('Success! ', 'Company Approved Successfully!', 'success');
+
+            _this2.applyCompaniesFilter(false);
           }
         }
       });
     },
-    updateCategory: function updateCategory() {
-      var _this4 = this;
+    disapproveCompany: function disapproveCompany(companyID) {
+      var _this3 = this;
 
       this.processing = true;
-      axios.post(this.updateCategoryUrl, {
-        categoryId: this.categoryId,
-        name: this.categoryName,
-        slug: this.categorySlug,
-        status: this.categoryStatus
+      axios.post(this.disapproveCompanyUrl, {
+        companyID: companyID
       }).then(function (response) {
         if (response) {
-          _this4.processing = false;
+          _this3.processing = false;
 
-          if (response.data.msg == 'Category Updated Successfully.') {
-            var context = _this4;
-            _this4.errorMessages = [];
-            _this4.successMessage = '';
-            _this4.successMessage = response.data.success;
-            _this4.categoryName = '';
-            _this4.categorySlug = '';
-            _this4.categoryStatus = 'enabled';
+          if (response.data.msg == 'Success') {
+            Swal.fire('Success! ', 'Company Disapproved Successfully!', 'success');
 
-            _this4.applyCategoriesFilter(false);
-
-            setTimeout(function () {
-              context.successMessage = '';
-              $("#editCategoryModal").modal('hide');
-            }, 1000);
-          }
-
-          if (response.data.code == 219) {
-            _this4.errorMessages = [];
-            _this4.errorMessages = response.data.data;
+            _this3.applyCompaniesFilter(false);
           }
         }
       });
     },
-    deleteCategory: function deleteCategory(categoryId) {
-      var _this5 = this;
+    deleteCompany: function deleteCompany(companyId) {
+      var _this4 = this;
 
-      axios.post(this.deleteCategoryUrl, {
-        id: categoryId
+      axios.post(this.deleteCompanyUrl, {
+        id: companyId
       }).then(function (response) {
         if (response) {
-          if (response.data.msg == 'Category Deleted Successfully.') {
-            _this5.applyCategoriesFilter(false);
+          if (response.data.msg == 'Success') {
+            Swal.fire('Success! ', 'Company Removed Successfully!', 'success');
+
+            _this4.applyCompaniesFilter(false);
           }
         }
       });
     },
-    categoriesFiltered: function categoriesFiltered(filteredItems) {
+    companiesFiltered: function companiesFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.categoriesMeta.totalRows = filteredItems.length;
-      this.categoriesMeta.currentPage = 1;
+      this.companiesMeta.totalRows = filteredItems.length;
+      this.companiesMeta.currentPage = 1;
     }
   }
 });
 
 /***/ }),
 
-/***/ 3:
-/*!*******************************************************!*\
-  !*** multi ./resources/views/admin/categories/vue.js ***!
-  \*******************************************************/
+/***/ 4:
+/*!******************************************************!*\
+  !*** multi ./resources/views/admin/companies/vue.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/Paybill/resources/views/admin/categories/vue.js */"./resources/views/admin/categories/vue.js");
+module.exports = __webpack_require__(/*! /var/www/html/Paybill/resources/views/admin/companies/vue.js */"./resources/views/admin/companies/vue.js");
 
 
 /***/ })

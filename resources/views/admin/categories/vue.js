@@ -44,7 +44,7 @@ new Vue({
             this.applyCategoriesFilter(false);
         },
         resetFilter() {
-            this.categoriesMeta.searchQuery = "";
+            this.categoriesTable.searchQuery = "";
             this.orderBy = 'DESC';
             this.applyCategoriesFilter();
         },
@@ -89,6 +89,7 @@ new Vue({
                     if(response){
                         this.processing = false;
                         if (response.data.msg == 'Category Created Successfully.') {
+                            var context = this;
                             this.errorMessages = [];
                             this.successMessage = '';
                             this.successMessage = response.data.success;
@@ -97,7 +98,7 @@ new Vue({
                             this.categoryStatus = 'enabled';
                             this.applyCategoriesFilter(false);
                             setTimeout(function () {
-                                this.successMessage = '';
+                                context.successMessage = '';
                                 $("#addCategoryModal").modal('hide');
                             }, 1000);
                         }
@@ -115,7 +116,6 @@ new Vue({
                 categoryId: categoryId
             }).then(response => {
                 if(response){
-                    console.log(response);
                     if (response.data.msg == 'Success') {
                         this.categoryName = response.data.data.name;
                         this.categorySlug = response.data.data.slug;
@@ -138,6 +138,7 @@ new Vue({
                     if(response){
                         this.processing = false;
                         if (response.data.msg == 'Category Updated Successfully.') {
+                            var context = this;
                             this.errorMessages = [];
                             this.successMessage = '';
                             this.successMessage = response.data.success;
@@ -146,7 +147,7 @@ new Vue({
                             this.categoryStatus = 'enabled';
                             this.applyCategoriesFilter(false);
                             setTimeout(function () {
-                                this.successMessage = '';
+                                context.successMessage = '';
                                 $("#editCategoryModal").modal('hide');
                             }, 1000);
                         }
