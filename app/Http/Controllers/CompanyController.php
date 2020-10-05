@@ -100,6 +100,6 @@ class CompanyController extends Controller
             'status' => 0,
         ]);
 
-        return redirect()->back()->with(['success' => 'Please wait till admin approves your company.']);
+        return redirect()->back()->with(['companyCreated' => 'Please wait till admin approves your company.']);
     }
 }

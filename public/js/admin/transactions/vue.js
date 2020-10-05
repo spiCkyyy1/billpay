@@ -81,20 +81,20 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/views/admin/companies/vue.js":
-/*!************************************************!*\
-  !*** ./resources/views/admin/companies/vue.js ***!
-  \************************************************/
+/***/ "./resources/views/admin/transactions/vue.js":
+/*!***************************************************!*\
+  !*** ./resources/views/admin/transactions/vue.js ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 new Vue({
-  el: '#companies_container',
+  el: '#transactions_container',
   data: {
     dataLoaded: false,
     isBusy: false,
@@ -104,47 +104,65 @@ new Vue({
     fields: [{
       key: 'id',
       label: 'ID'
-    }, 'name', 'country', 'state', 'city', {
-      key: 'zip_code',
-      label: 'Zip Code'
-    }, 'email', {
-      key: 'paypal_id',
-      label: 'Paypal ID'
-    }, 'status', 'Actions'],
-    getCompaniesUrl: App_url + '/all',
-    deleteCompanyUrl: App_url + '/delete',
-    approveCompanyUrl: App_url + '/approve',
-    disapproveCompanyUrl: App_url + '/disapprove',
-    companies: [],
-    companiesTable: {
+    }, {
+      key: 'payment_id',
+      label: 'Payment ID'
+    }, 'payment_status', {
+      key: 'payer_id',
+      label: 'Payer ID'
+    }, {
+      key: 'payer_email',
+      label: 'Payer Email'
+    }, {
+      key: 'payer_name',
+      label: 'Payer Name'
+    }, {
+      key: 'payer_country_code',
+      label: 'Payer Country Code'
+    }, {
+      key: 'transaction_amount',
+      label: 'Transaction Amount'
+    }, {
+      key: 'transaction_currency',
+      label: 'Transaction Currency'
+    }, 'merchant_id', 'merchant_email', 'commission', {
+      key: 'transaction_create_time',
+      label: 'Transaction Created Time'
+    }, {
+      key: 'transaction_update_time',
+      label: 'Transaction Updated Time'
+    }],
+    getTransactionsUrl: App_url + '/all',
+    transactions: [],
+    transactionTable: {
       searchQuery: '',
       searching: false
     },
     orderBy: 'DESC',
-    companiesMeta: {}
+    transactionsMeta: {}
   },
   mounted: function mounted() {
-    this.applyCompaniesFilter();
+    this.applyFilter();
   },
   watch: {
-    'companiesMeta.current_page': function companiesMetaCurrent_page(val) {
+    'transactionsMeta.current_page': function transactionsMetaCurrent_page(val) {
       this.loadCompaniesPaginatedData();
     }
   },
   methods: {
     loadCompaniesPaginatedData: function loadCompaniesPaginatedData() {
-      this.applyCompaniesFilter(this.getCompaniesUrl + '?page=' + this.companiesMeta.current_page);
+      this.applyFilter(this.getTransactionsUrl + '?page=' + this.transactionsMeta.current_page);
     },
     getOrderByResult: function getOrderByResult(orderBy) {
       this.orderBy = orderBy;
-      this.applyCompaniesFilter(false);
+      this.applyFilter(false);
     },
     resetFilter: function resetFilter() {
-      this.companiesTable.searchQuery = "";
+      this.transactionTable.searchQuery = "";
       this.orderBy = 'DESC';
-      this.applyCompaniesFilter();
+      this.applyFilter();
     },
-    applyCompaniesFilter: function applyCompaniesFilter() {
+    applyFilter: function applyFilter() {
       var _this = this;
 
       var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
@@ -152,17 +170,17 @@ new Vue({
       this.isBusy = true;
 
       if (url == false) {
-        url = this.getCompaniesUrl;
+        url = this.getTransactionsUrl;
       }
 
       axios.post(url, {
-        "SearchQuery": this.companiesTable.searchQuery,
+        "SearchQuery": this.transactionTable.searchQuery,
         orderBy: this.orderBy
       }).then(function (response) {
         if (response) {
           if (response.data.msg == 'Success') {
-            _this.companies = response.data.data;
-            _this.companiesMeta = response.data.meta;
+            _this.transactions = response.data.data;
+            _this.transactionsMeta = response.data.meta;
             _this.processing = false;
             _this.isBusy = false;
           }
@@ -172,84 +190,24 @@ new Vue({
         _this.isBusy = false;
       });
     },
-    approveCompany: function approveCompany(companyId) {
-      var _this2 = this;
-
-      axios.post(this.approveCompanyUrl, {
-        companyId: companyId
-      }).then(function (response) {
-        if (response) {
-          if (response.data.msg == 'Success') {
-            Swal.fire('Success! ', 'Company Approved Successfully!', 'success');
-
-            _this2.applyCompaniesFilter(false);
-          }
-        }
-      });
-    },
-    disapproveCompany: function disapproveCompany(companyID) {
-      var _this3 = this;
-
-      this.processing = true;
-      axios.post(this.disapproveCompanyUrl, {
-        companyID: companyID
-      }).then(function (response) {
-        if (response) {
-          _this3.processing = false;
-
-          if (response.data.msg == 'Success') {
-            Swal.fire('Success! ', 'Company Disapproved Successfully!', 'success');
-
-            _this3.applyCompaniesFilter(false);
-          }
-        }
-      });
-    },
-    deleteCompany: function deleteCompany(companyId) {
-      var _this4 = this;
-
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then(function (result) {
-        if (result.value) {
-          axios.post(_this4.deleteCompanyUrl, {
-            id: companyId
-          }).then(function (response) {
-            if (response) {
-              if (response.data.msg == 'Success') {
-                Swal.fire('Success! ', 'Company Removed Successfully!', 'success');
-
-                _this4.applyCompaniesFilter(false);
-              }
-            }
-          });
-        }
-      });
-    },
-    companiesFiltered: function companiesFiltered(filteredItems) {
+    transactionsFiltered: function transactionsFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.companiesMeta.totalRows = filteredItems.length;
-      this.companiesMeta.currentPage = 1;
+      this.transactionsMeta.totalRows = filteredItems.length;
+      this.transactionsMeta.currentPage = 1;
     }
   }
 });
 
 /***/ }),
 
-/***/ 4:
-/*!******************************************************!*\
-  !*** multi ./resources/views/admin/companies/vue.js ***!
-  \******************************************************/
+/***/ 8:
+/*!*********************************************************!*\
+  !*** multi ./resources/views/admin/transactions/vue.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/Paybill/resources/views/admin/companies/vue.js */"./resources/views/admin/companies/vue.js");
+module.exports = __webpack_require__(/*! /var/www/html/Paybill/resources/views/admin/transactions/vue.js */"./resources/views/admin/transactions/vue.js");
 
 
 /***/ })

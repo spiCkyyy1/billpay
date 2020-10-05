@@ -81,205 +81,204 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/views/admin/categories/vue.js":
-/*!*************************************************!*\
-  !*** ./resources/views/admin/categories/vue.js ***!
-  \*************************************************/
+/***/ "./resources/views/admin/roles/vue.js":
+/*!********************************************!*\
+  !*** ./resources/views/admin/roles/vue.js ***!
+  \********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 new Vue({
-  el: '#categories_container',
+  el: '#roles_container',
   data: {
     dataLoaded: false,
     isBusy: false,
-    processing: false,
     fullscreen: false,
-    timer: "",
-    fields: [{
-      key: 'id',
-      label: 'ID'
-    }, 'name', 'slug', 'status', 'Actions'],
-    getCategoriesUrl: App_url + '/all',
-    createCategoryUrl: App_url + '/create',
-    deleteCategoryUrl: App_url + '/delete',
-    editCategoryUrl: App_url + '/get',
-    updateCategoryUrl: App_url + '/update',
-    categoryId: '',
-    categoryName: '',
-    categorySlug: '',
-    categoryStatus: 'enabled',
-    errorMessages: [],
-    errorMessage: '',
-    successMessage: '',
-    categories: [],
-    categoriesTable: {
+    rolesTable: {
       searchQuery: '',
       searching: false
     },
     orderBy: 'DESC',
-    categoriesMeta: {}
+    fields: [{
+      key: 'id',
+      label: 'ID'
+    }, 'name', 'permissions', 'Actions'],
+    roleName: '',
+    roleId: '',
+    editRoleName: '',
+    getRolesUrl: App_url + '/all',
+    saveRoleUrl: App_url + '/create',
+    editRoleUrl: App_url + '/get',
+    updateRoleUrl: App_url + '/update',
+    deleteRoleUrl: App_url + '/delete',
+    getPermissionsUrl: App_url + '/permissions/all',
+    roles: [],
+    permissions: [],
+    roleErrors: [],
+    roleError: '',
+    roleSuccessMessage: '',
+    checkedPermissions: [],
+    editAlreadySelectedPermissions: [],
+    rolesMeta: {}
   },
   mounted: function mounted() {
-    this.applyCategoriesFilter();
+    this.getPermissions();
+    this.applyRolesFilter(false);
   },
   watch: {
-    'categoriesMeta.current_page': function categoriesMetaCurrent_page(val) {
-      this.loadCategoriesPaginatedData();
+    'rolesMeta.current_page': function rolesMetaCurrent_page(val) {
+      this.loadrolesPaginatedData();
     }
   },
   methods: {
-    loadCategoriesPaginatedData: function loadCategoriesPaginatedData() {
-      this.applyCategoriesFilter(this.getCategoriesUrl + '?page=' + this.categoriesMeta.current_page);
+    toggle: function toggle() {
+      this.$refs['fullscreen'].toggle();
+    },
+    fullscreenChange: function fullscreenChange(fullscreen) {
+      this.fullscreen = fullscreen;
+    },
+    loadrolesPaginatedData: function loadrolesPaginatedData() {
+      this.applyRolesFilter(this.getRolesUrl + '?page=' + this.rolesMeta.current_page);
     },
     getOrderByResult: function getOrderByResult(orderBy) {
       this.orderBy = orderBy;
-      this.applyCategoriesFilter(false);
+      this.applyRolesFilter(false);
     },
-    resetFilter: function resetFilter() {
-      this.categoriesTable.searchQuery = "";
-      this.orderBy = 'DESC';
-      this.applyCategoriesFilter();
-    },
-    applyCategoriesFilter: function applyCategoriesFilter() {
+    applyRolesFilter: function applyRolesFilter() {
       var _this = this;
 
       var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      this.processing = true;
       this.isBusy = true;
 
       if (url == false) {
-        url = this.getCategoriesUrl;
+        url = this.getRolesUrl;
       }
 
       axios.post(url, {
-        "SearchQuery": this.categoriesMeta.searchQuery,
+        search: this.rolesTable.searchQuery,
         orderBy: this.orderBy
       }).then(function (response) {
         if (response) {
           if (response.data.msg == 'Success') {
-            _this.categories = response.data.data;
-            _this.categoriesMeta = response.data.meta;
-            _this.processing = false;
+            _this.roles = response.data.data;
+            _this.rolesMeta = response.data.meta;
             _this.isBusy = false;
           }
         }
       })["catch"](function (error) {
-        _this.processing = false;
+        console.log(error);
         _this.isBusy = false;
       });
     },
-    showAddModal: function showAddModal() {
-      $("#addCategoryModal").modal('show');
-      this.categoryName = '';
-      this.categorySlug = '';
-      this.categoryStatus = 'enabled';
-      this.successMessage = '';
-      this.errorMessage = '';
-      this.errorMessages = [];
-    },
-    createCategory: function createCategory() {
+    getPermissions: function getPermissions() {
       var _this2 = this;
 
-      this.processing = true;
-      axios.post(this.createCategoryUrl, {
-        name: this.categoryName,
-        slug: this.categorySlug,
-        status: this.categoryStatus
-      }).then(function (response) {
+      axios.get(this.getPermissionsUrl).then(function (response) {
         if (response) {
-          _this2.processing = false;
-
-          if (response.data.msg == 'Category Created Successfully.') {
-            var context = _this2;
-            _this2.errorMessages = [];
-            _this2.successMessage = '';
-            _this2.successMessage = response.data.msg;
-            _this2.categoryName = '';
-            _this2.categorySlug = '';
-            _this2.categoryStatus = 'enabled';
-
-            _this2.applyCategoriesFilter(false);
-
-            setTimeout(function () {
-              context.successMessage = '';
-              $("#addCategoryModal").modal('hide');
-            }, 1000);
-          }
-
-          if (response.data.code == 219) {
-            _this2.errorMessages = [];
-            _this2.errorMessages = response.data.data;
-            console.log(_this2.errorMessages);
+          if (response.data.code == 200) {
+            _this2.permissions = response.data.data;
           }
         }
       });
     },
-    editCategory: function editCategory(categoryId) {
+    showAddModal: function showAddModal() {
+      $("#addRoleModal").modal('show');
+      this.roleSuccessMessage = '';
+      this.roleName = '';
+      this.checkedPermissions = [];
+      this.editAlreadySelectedPermissions = [];
+      this.roleErrors = [];
+    },
+    saveRole: function saveRole() {
       var _this3 = this;
 
-      this.categoryId = categoryId;
-      this.errorMessages = [];
-      axios.post(this.editCategoryUrl, {
-        categoryId: categoryId
+      this.roleErrors = [];
+      this.roleError = '';
+      this.roleSuccessMessage = '';
+      axios.post(this.saveRoleUrl, {
+        roleName: this.roleName,
+        permissions: this.checkedPermissions
+      }).then(function (response) {
+        if (response) {
+          if (response.data.code == 219) {
+            _this3.roleError = response.data.msg;
+          }
+
+          if (response.data.msg == 'Role created successfully.') {
+            _this3.roleSuccessMessage = response.data.msg;
+            _this3.roleName = '';
+            _this3.checkedPermissions = [];
+            _this3.editAlreadySelectedPermissions = [];
+
+            _this3.applyRolesFilter(false);
+
+            setTimeout(function () {
+              $("#addRoleModal").modal('hide');
+            }, 1000);
+          }
+        }
+      });
+    },
+    editRole: function editRole(roleId) {
+      var _this4 = this;
+
+      this.roleId = roleId;
+      this.roleErrors = [];
+      this.roleError = '';
+      this.editAlreadySelectedPermissions = [];
+      this.roleSuccessMessage = '';
+      axios.post(this.editRoleUrl, {
+        roleId: roleId
       }).then(function (response) {
         if (response) {
           if (response.data.msg == 'Success') {
-            _this3.categoryName = response.data.data.name;
-            _this3.categorySlug = response.data.data.slug;
-            _this3.categoryStatus = response.data.data.status;
-            _this3.successMessage = '';
-            $("#editCategoryModal").modal('show');
+            $("#editRoleModal").modal('show');
+            _this4.editRoleName = response.data.roleWithPermission.name;
+            _this4.editAlreadySelectedPermissions = response.data.permissions;
+            _this4.roleSuccessMessage = '';
+            _this4.roleError = '';
           }
         }
       });
     },
-    updateCategory: function updateCategory() {
-      var _this4 = this;
-
-      this.processing = true;
-      axios.post(this.updateCategoryUrl, {
-        id: this.categoryId,
-        name: this.categoryName,
-        slug: this.categorySlug,
-        status: this.categoryStatus
-      }).then(function (response) {
-        if (response) {
-          _this4.processing = false;
-
-          if (response.data.msg == 'Category Updated Successfully.') {
-            var context = _this4;
-            _this4.errorMessages = [];
-            _this4.successMessage = '';
-            _this4.successMessage = response.data.msg;
-            _this4.categoryName = '';
-            _this4.categorySlug = '';
-            _this4.categoryStatus = 'enabled';
-
-            _this4.applyCategoriesFilter(false);
-
-            setTimeout(function () {
-              context.successMessage = '';
-              $("#editCategoryModal").modal('hide');
-            }, 1000);
-          }
-
-          if (response.data.code == 219) {
-            _this4.errorMessages = [];
-            _this4.errorMessages = response.data.data;
-          }
-        }
-      });
-    },
-    deleteCategory: function deleteCategory(categoryId) {
+    updateRole: function updateRole() {
       var _this5 = this;
 
-      Swal.fire({
+      this.roleErrors = [];
+      this.roleError = '';
+      this.roleSuccessMessage = '';
+      axios.post(this.updateRoleUrl, {
+        roleName: this.editRoleName,
+        roleId: this.roleId,
+        permissions: this.editAlreadySelectedPermissions
+      }).then(function (response) {
+        if (response) {
+          if (response.data.code == 219) {
+            _this5.roleError = response.data.msg;
+          }
+
+          if (response.data.msg == 'Role updated successfully.') {
+            _this5.applyRolesFilter(false);
+
+            _this5.roleId = '';
+            _this5.roleSuccessMessage = response.data.msg;
+            setTimeout(function () {
+              this.editRoleName = '';
+              $("#editRoleModal").modal('hide');
+            }, 1000);
+          }
+        }
+      });
+    },
+    deleteRole: function deleteRole(roleId) {
+      var _this6 = this;
+
+      swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
         type: 'warning',
@@ -289,36 +288,40 @@ new Vue({
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post(_this5.deleteCategoryUrl, {
-            id: categoryId
+          axios.post(_this6.deleteRoleUrl, {
+            roleId: roleId
           }).then(function (response) {
             if (response) {
-              if (response.data.msg == 'Category Deleted Successfully.') {
-                _this5.applyCategoriesFilter(false);
+              if (response.data.code == 200) {
+                swal('Deleted!', response.data.message, 'success');
+
+                _this6.applyRolesFilter(false);
               }
             }
+          })["catch"](function (error) {
+            swal('Sorry!', error.response.data.message, 'warning');
           });
         }
       });
     },
-    categoriesFiltered: function categoriesFiltered(filteredItems) {
+    Filtered: function Filtered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.categoriesMeta.totalRows = filteredItems.length;
-      this.categoriesMeta.currentPage = 1;
+      this.rolesMeta.totalRows = filteredItems.length;
+      this.rolesMeta.currentPage = 1;
     }
   }
 });
 
 /***/ }),
 
-/***/ 3:
-/*!*******************************************************!*\
-  !*** multi ./resources/views/admin/categories/vue.js ***!
-  \*******************************************************/
+/***/ 7:
+/*!**************************************************!*\
+  !*** multi ./resources/views/admin/roles/vue.js ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/Paybill/resources/views/admin/categories/vue.js */"./resources/views/admin/categories/vue.js");
+module.exports = __webpack_require__(/*! /var/www/html/Paybill/resources/views/admin/roles/vue.js */"./resources/views/admin/roles/vue.js");
 
 
 /***/ })

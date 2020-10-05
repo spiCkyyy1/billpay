@@ -113,7 +113,7 @@ new Vue({
                         if (response.data.msg == 'User created successfully!') {
                             this.errorMessages = [];
                             this.successMessage = '';
-                            this.successMessage = response.data.success;
+                            this.successMessage = response.data.msg;
                             this.userName = '';
                             this.userEmail = '';
                             this.userPassword = '';
@@ -168,7 +168,7 @@ new Vue({
                         if (response.data.msg == 'User updated successfully.') {
                             this.errorMessages = [];
                             this.successMessage = '';
-                            this.successMessage = response.data.success;
+                            this.successMessage = response.data.msg;
                             this.userName = '';
                             this.userEmail = '';
                             this.userPassword = '';
@@ -188,15 +188,28 @@ new Vue({
                 });
         },
         deleteUser(userId) {
-            axios.post(this.deleteUserUrl, {
-                userId: userId
-            }).then(response => {
-                if(response){
-                    if (response.data.msg == 'User removed successfully.') {
-                        this.applyUserFilter(false);
-                    }
+            Swal.fire({
+                title              : 'Are you sure?',
+                text               : "You won't be able to revert this!",
+                type               : 'warning',
+                showCancelButton   : true,
+                confirmButtonColor : '#3085d6',
+                cancelButtonColor  : '#d33',
+                confirmButtonText  : 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    axios.post(this.deleteUserUrl, {
+                        userId: userId
+                    }).then(response => {
+                        if(response){
+                            if (response.data.msg == 'User removed successfully.') {
+                                this.applyUserFilter(false);
+                            }
+                        }
+                    });
                 }
             });
+
         },
         userFiltered(filteredItems) {
             // Trigger pagination to update the number of buttons/pages due to filtering

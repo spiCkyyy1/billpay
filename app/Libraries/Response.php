@@ -96,11 +96,6 @@ class Response
         $this->_responseArray = array_merge($this->_responseArray, $this->_data);
 
 
-        if($log){
-            $this->log();
-        }
-
-
         response()->json($this->_responseArray, $this->_HttpCode)->send();
 
         die();

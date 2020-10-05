@@ -92,7 +92,7 @@ new Vue({
                             var context = this;
                             this.errorMessages = [];
                             this.successMessage = '';
-                            this.successMessage = response.data.success;
+                            this.successMessage = response.data.msg;
                             this.categoryName = '';
                             this.categorySlug = '';
                             this.categoryStatus = 'enabled';
@@ -105,6 +105,7 @@ new Vue({
                         if (response.data.code == 219) {
                             this.errorMessages = [];
                             this.errorMessages = response.data.data;
+                            console.log(this.errorMessages);
                         }
                     }
                 });
@@ -129,7 +130,7 @@ new Vue({
         updateCategory() {
             this.processing = true;
             axios.post(this.updateCategoryUrl, {
-                categoryId: this.categoryId,
+                id: this.categoryId,
                 name: this.categoryName,
                 slug: this.categorySlug,
                 status: this.categoryStatus,
@@ -141,7 +142,7 @@ new Vue({
                             var context = this;
                             this.errorMessages = [];
                             this.successMessage = '';
-                            this.successMessage = response.data.success;
+                            this.successMessage = response.data.msg;
                             this.categoryName = '';
                             this.categorySlug = '';
                             this.categoryStatus = 'enabled';
@@ -159,15 +160,28 @@ new Vue({
                 });
         },
         deleteCategory(categoryId) {
-            axios.post(this.deleteCategoryUrl, {
-                id: categoryId
-            }).then(response => {
-                if(response){
-                    if (response.data.msg == 'Category Deleted Successfully.') {
-                        this.applyCategoriesFilter(false);
-                    }
+            Swal.fire({
+                title              : 'Are you sure?',
+                text               : "You won't be able to revert this!",
+                type               : 'warning',
+                showCancelButton   : true,
+                confirmButtonColor : '#3085d6',
+                cancelButtonColor  : '#d33',
+                confirmButtonText  : 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    axios.post(this.deleteCategoryUrl, {
+                        id: categoryId
+                    }).then(response => {
+                        if(response){
+                            if (response.data.msg == 'Category Deleted Successfully.') {
+                                this.applyCategoriesFilter(false);
+                            }
+                        }
+                    });
                 }
             });
+
         },
         categoriesFiltered(filteredItems) {
             // Trigger pagination to update the number of buttons/pages due to filtering

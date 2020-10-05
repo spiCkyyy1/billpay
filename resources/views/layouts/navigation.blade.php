@@ -28,6 +28,7 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
+    @can('acl-nav-view')
     <li @if(Route::currentRouteName() == 'users') class="nav-item active" @else class="nav-item" @endif>
         <a class="nav-link" href="{{route('users')}}">
             <i class="fas fa-fw fa-user"></i>
@@ -35,43 +36,61 @@
         </a>
     </li>
 
+
+    <li @if(Route::currentRouteName() == 'admin.permissions') class="nav-item active" @else class="nav-item" @endif>
+        <a class="nav-link" href="{{route('admin.permissions')}}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Permissions</span>
+        </a>
+    </li>
+
+    <li @if(Route::currentRouteName() == 'admin.roles') class="nav-item active" @else class="nav-item" @endif>
+        <a class="nav-link" href="{{route('admin.roles')}}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Roles</span>
+        </a>
+    </li>
+    @endcan
+
+
     <!-- Nav Item - Utilities Collapse Menu -->
+    @can('categories-nav-view')
     <li @if(Route::currentRouteName() == 'categories') class="nav-item active" @else class="nav-item" @endif>
         <a class="nav-link" href="{{route('categories')}}" >
             <i class="fas fa-fw fa-wrench"></i>
             <span>Categories</span>
         </a>
     </li>
+    @endcan
 
     <!-- Nav Item - Pages Collapse Menu -->
+    @can('companies-nav-view')
     <li class="nav-item" @if(Route::currentRouteName() == 'admin.companies') class="nav-item active" @else class="nav-item" @endif>
         <a class="nav-link" href="{{route('admin.companies')}}">
             <i class="fas fa-fw fa-folder"></i>
             <span>Companies</span>
         </a>
     </li>
+    @endcan
 
     <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
+    @can('email-templates-nav-view')
+    <li class="nav-item" @if(Route::currentRouteName() == 'email.template') class="nav-item active" @else class="nav-item" @endif>
+        <a class="nav-link" href="{{route('email.template')}}">
+            <i class="fas fa-fw fa-mail-bulk"></i>
+            <span>Email Templates</span>
+        </a>
     </li>
+    @endcan
 
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
+<!-- Nav Item - Charts -->
+    @can('transactions-nav-view')
+    <li class="nav-item" @if(Route::currentRouteName() == 'admin.transactions') class="nav-item active" @else class="nav-item" @endif>
+        <a class="nav-link" href="{{route('admin.transactions')}}">
+            <i class="fas fa-fw fa-money-check-alt"></i>
+            <span>Transactions</span>
+        </a>
     </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
-
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
-
+    @endcan
 </ul>
 <!-- End of Sidebar -->

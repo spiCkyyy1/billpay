@@ -1,6 +1,10 @@
 {
+    "/js/admin/EmailTemplates/vue.js": "/js/admin/EmailTemplates/vue.js",
     "/js/admin/categories/vue.js": "/js/admin/categories/vue.js",
     "/js/admin/companies/vue.js": "/js/admin/companies/vue.js",
+    "/js/admin/permissions/vue.js": "/js/admin/permissions/vue.js",
+    "/js/admin/roles/vue.js": "/js/admin/roles/vue.js",
+    "/js/admin/transactions/vue.js": "/js/admin/transactions/vue.js",
     "/js/admin/users/vue.js": "/js/admin/users/vue.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",

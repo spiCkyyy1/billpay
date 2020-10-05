@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 
+Route::get('/', function () {
+    return redirect()->route('company');
+})->name('/');
 Route::middleware(['auth'])->group(function(){
-    Route::get('/', function () {
-        return redirect()->route('company');
-    });
 
     Route::get('/admin/dashboard', 'HomeController@index')->name('home');
     Route::get('/admin/users', function () {
@@ -51,12 +51,69 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/admin/companies/approve', 'CompanyController@approve')->name('admin.companies.approve');
     Route::post('/admin/companies/disapprove', 'CompanyController@disapprove')->name('admin.companies.disapprove');
     Route::post('/admin/companies/delete', 'CompanyController@delete')->name('admin.companies.delete');
+
+
+    Route::get('/admin/email/template', function () {
+        return view('admin.EmailTemplates.index');
+    })->name('email.template');
+
+    Route::post('/admin/email/template/all', 'EmailTemplateController@index')->name('email.template.search');
+    Route::post('/admin/email/template/create', 'EmailTemplateController@create')->name('email.template.create');
+    Route::post('/admin/email/template/delete', 'EmailTemplateController@delete')->name('email.template.delete');
+    Route::post('/admin/email/template/get', 'EmailTemplateController@edit')->name('email.template.get');
+    Route::post('/admin/email/template/update', 'EmailTemplateController@update')->name('email.template.update');
+
+
+    Route::get('/admin/permissions', function () {
+        return view('admin.permissions.index');
+    })->name('admin.permissions');
+
+    Route::post('/admin/permissions/all', 'PermissionController@index')->name('admin.permissions.search');
+    Route::post('/admin/permissions/create', 'PermissionController@create')->name('admin.permissions.create');
+    Route::post('/admin/permissions/delete', 'PermissionController@delete')->name('admin.permissions.delete');
+    Route::post('/admin/permissions/get', 'PermissionController@edit')->name('admin.permissions.get');
+    Route::post('/admin/permissions/update', 'PermissionController@update')->name('admin.permissions.update');
+
+    Route::get('/admin/roles', function () {
+        return view('admin.roles.index');
+    })->name('admin.roles');
+    Route::post('/admin/roles/all', 'RoleController@getRoles')->name('admin.roles.all');
+    Route::get('/admin/roles/permissions/all', 'RoleController@getAllPermissions')->name('admin.roles.all');
+    Route::post('/admin/roles/create', 'RoleController@createRole')->name('admin.roles.create');
+    Route::post('/admin/roles/get', 'RoleController@editRole')->name('admin.roles.first');
+    Route::post('/admin/roles/update', 'RoleController@updateRole')->name('admin.roles.update');
+    Route::post('/admin/roles/delete', 'RoleController@deleteRole')->name('admin.roles.delete');
+
+
+    Route::get('/admin/transactions', function () {
+        return view('admin.transactions.index');
+    })->name('admin.transactions');
+
+    Route::post('/admin/transactions/all', function(){
+        $request = request();
+        $helper = new \App\Helpers\Helper();
+        $transactions = new \App\Transaction;
+
+        $transactions = $transactions->where(function($query) use ($request){
+            $query->where('payer_name', 'LIKE', '%'.$request->SearchQuery.'%');
+        });
+
+        $helper->response()->setHttpCode(200)->send($transactions->orderBy('id', request()->orderBy)->paginate());
+
+    });
+
 });
 
 Route::get('/company', function () {
     $companies = new \App\Company;
+    $categories = new \App\Categories;
     $companies = $companies->where('status', 1)->get();
-    return view('company.add', compact('companies'));
+    $categories = $categories->where('status', 'enabled')->get();
+    return view('company.add', compact('companies', 'categories'));
 })->name('company');
 
 Route::post('/company/save', 'CompanyController@store')->name('company.add');
+
+Route::post('paypal', 'PaymentController@payWithpaypal')->name('paywithpaypal');
+
+Route::get('status', 'PaymentController@getPaymentStatus')->name('status');

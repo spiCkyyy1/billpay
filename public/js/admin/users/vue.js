@@ -222,7 +222,7 @@ new Vue({
           if (response.data.msg == 'User created successfully!') {
             _this3.errorMessages = [];
             _this3.successMessage = '';
-            _this3.successMessage = response.data.success;
+            _this3.successMessage = response.data.msg;
             _this3.userName = '';
             _this3.userEmail = '';
             _this3.userPassword = '';
@@ -284,7 +284,7 @@ new Vue({
           if (response.data.msg == 'User updated successfully.') {
             _this5.errorMessages = [];
             _this5.successMessage = '';
-            _this5.successMessage = response.data.success;
+            _this5.successMessage = response.data.msg;
             _this5.userName = '';
             _this5.userEmail = '';
             _this5.userPassword = '';
@@ -309,13 +309,25 @@ new Vue({
     deleteUser: function deleteUser(userId) {
       var _this6 = this;
 
-      axios.post(this.deleteUserUrl, {
-        userId: userId
-      }).then(function (response) {
-        if (response) {
-          if (response.data.msg == 'User removed successfully.') {
-            _this6.applyUserFilter(false);
-          }
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.post(_this6.deleteUserUrl, {
+            userId: userId
+          }).then(function (response) {
+            if (response) {
+              if (response.data.msg == 'User removed successfully.') {
+                _this6.applyUserFilter(false);
+              }
+            }
+          });
         }
       });
     },

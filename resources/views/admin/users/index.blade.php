@@ -147,9 +147,14 @@
 
 {{--                            <v-select placeholder="Select Roles" :reduce="role => role.id" v-model="selectdRoles" :options="roles" label="name" taggable multiple></v-select>--}}
 
-{{--                            <div v-for="(value, name, index) in errorMessages" style="color: red">--}}
-{{--                                <label v-if="name == 'selectdRoles'">@{{value[0]}}</label>--}}
-{{--                            </div>--}}
+                            <div v-for="(value, name, index) in errorMessages" style="color: red">
+                                <label v-if="name == 'selectdRoles'">@{{value[0]}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-4" v-if="successMessage != null">
+                            <div class="col">
+                                <p style="color: green">@{{successMessage}}</p>
+                            </div>
                         </div>
                         <button :disabled="processing" class="btn btn-info my-4 btn-block" type="button" @click="createUser">Create User</button>
                     </div>
@@ -189,12 +194,17 @@
                         </div>
                         <div class="form-group">
 {{--                            <v-select placeholder="Select Roles" :reduce="role => role.id" v-model="selectdRoles" :options="roles" label="name" taggable multiple></v-select>--}}
-{{--                            <div v-for="(value, name, index) in errorMessages" style="color: red">--}}
-{{--                                <label v-if="name == 'selectdRoles'">@{{value[0]}}</label>--}}
-{{--                            </div>--}}
+                            <div v-for="(value, name, index) in errorMessages" style="color: red">
+                                <label v-if="name == 'selectdRoles'">@{{value[0]}}</label>
+                            </div>
                             <select class="w-100" v-model="selectdRoles" multiple>
                                 <option v-for="role in roles" :value="role.id">@{{role.name}}</option>
                             </select>
+                        </div>
+                        <div class="form-group row mb-4" v-if="successMessage != null">
+                            <div class="col">
+                                <p style="color: green">@{{successMessage}}</p>
+                            </div>
                         </div>
                         <button :disabled="processing" class="btn btn-info my-4 btn-block" type="button" @click="updateUser">Update User</button>
                     </div>

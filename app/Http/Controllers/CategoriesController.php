@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
-
 class CategoriesController extends Controller
 {
     protected $_helper;
@@ -27,6 +26,12 @@ class CategoriesController extends Controller
 
     public function create(){
         $request = request();
+
+        $this->_helper->runValidation([
+            'name' => 'required',
+            'slug' => 'required|unique:categories,slug',
+            'status' => 'required'
+        ]);
 
         $category = new \App\Categories;
 
@@ -52,9 +57,15 @@ class CategoriesController extends Controller
     public function update(){
         $request = request();
 
+        $this->_helper->runValidation([
+            'name' => 'required',
+            'slug' => 'required|unique:categories,slug,' . $request->id,
+            'status' => 'required'
+        ]);
+
         $category = new \App\Categories;
 
-        $category = $category->find($request->categoryId);
+        $category = $category->find($request->id);
 
         $category->name = $request->name;
         $category->slug = $request->slug;

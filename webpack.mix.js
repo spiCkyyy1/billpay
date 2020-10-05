@@ -18,5 +18,9 @@ mix.js('resources/js/app-vue.js', 'public/js/app-vue.js');
 mix.js('resources/views/admin/users/vue.js', 'public/js/admin/users/vue.js');
 mix.js('resources/views/admin/categories/vue.js', 'public/js/admin/categories/vue.js');
 mix.js('resources/views/admin/companies/vue.js', 'public/js/admin/companies/vue.js');
+mix.js('resources/views/admin/EmailTemplates/vue.js', 'public/js/admin/EmailTemplates/vue.js');
+mix.js('resources/views/admin/permissions/vue.js', 'public/js/admin/permissions/vue.js');
+mix.js('resources/views/admin/roles/vue.js', 'public/js/admin/roles/vue.js');
+mix.js('resources/views/admin/transactions/vue.js', 'public/js/admin/transactions/vue.js');
 
 mix.sass('resources/sass/app.scss', 'public/css/app.css');
