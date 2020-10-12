@@ -9,5 +9,9 @@ class Company extends Model
 {
     use Notifiable;
 
-    protected $fillable = ['name', 'country', 'state', 'city', 'address', 'zip_code', 'email', 'password', 'paypal_id', 'status'];
+    protected $fillable = ['category_id','name', 'country', 'state', 'city', 'address', 'zip_code', 'email', 'password', 'paypal_id', 'status'];
+
+    public function categories(){
+        return $this->hasOne(Categories::class, 'id', 'category_id');
+    }
 }

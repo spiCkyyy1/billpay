@@ -17,12 +17,13 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 
+
 Route::get('/', function () {
-    return redirect()->route('company');
+    return redirect()->route('send.payment');
 })->name('/');
 Route::middleware(['auth'])->group(function(){
 
-    Route::get('/admin/dashboard', 'HomeController@index')->name('home');
+    Route::get('/dashboard', 'HomeController@index')->name('home');
     Route::get('/admin/users', function () {
         return view('admin.users.index');
     })->name('users');
@@ -85,11 +86,11 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/admin/roles/delete', 'RoleController@deleteRole')->name('admin.roles.delete');
 
 
-    Route::get('/admin/transactions', function () {
+    Route::get('/transactions', function () {
         return view('admin.transactions.index');
     })->name('admin.transactions');
 
-    Route::post('/admin/transactions/all', function(){
+    Route::post('/transactions/all', function(){
         $request = request();
         $helper = new \App\Helpers\Helper();
         $transactions = new \App\Transaction;
@@ -98,22 +99,39 @@ Route::middleware(['auth'])->group(function(){
             $query->where('payer_name', 'LIKE', '%'.$request->SearchQuery.'%');
         });
 
+        $transactions = $transactions->where('user_id', Auth::user()->id);
+
         $helper->response()->setHttpCode(200)->send($transactions->orderBy('id', request()->orderBy)->paginate());
 
     });
 
+    Route::get('/send/payment', function(){
+        $companies = new \App\Company;
+//    $categories = new \App\Categories;
+        $companies = $companies->where('status', 1)->get();
+//    $categories = $categories->where('status', 'enabled')->get();
+        return view('sendPayment', compact('companies'));
+    })->name('send.payment');
+
+    Route::post('/company/save', 'CompanyController@store')->name('company.add');
+
+    Route::post('paypal', 'PaymentController@payWithpaypal')->name('paywithpaypal');
+
+    Route::get('status', 'PaymentController@getPaymentStatus')->name('status');
+
+
 });
 
-Route::get('/company', function () {
-    $companies = new \App\Company;
+//Route::get('/company', function () {
+//    $companies = new \App\Company;
+//    $categories = new \App\Categories;
+//    $companies = $companies->where('status', 1)->get();
+//    $categories = $categories->where('status', 'enabled')->get();
+//    return view('company.add', compact('companies', 'categories'));
+//})->name('company');
+
+Route::get('/company/add', function(){
     $categories = new \App\Categories;
-    $companies = $companies->where('status', 1)->get();
     $categories = $categories->where('status', 'enabled')->get();
-    return view('company.add', compact('companies', 'categories'));
-})->name('company');
-
-Route::post('/company/save', 'CompanyController@store')->name('company.add');
-
-Route::post('paypal', 'PaymentController@payWithpaypal')->name('paywithpaypal');
-
-Route::get('status', 'PaymentController@getPaymentStatus')->name('status');
+    return view('company.add', compact('categories'));
+})->name('company.form');

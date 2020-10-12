@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use PayPal\Api\Payee;
+use Auth;
 class PaymentController extends Controller
 {
     protected $_api_context;
@@ -142,6 +143,8 @@ class PaymentController extends Controller
             $transaction = new \App\Transaction;
 
             $transaction->create([
+                'user_id' => Auth::user()->id,
+                'user_email' => Auth::user()->email,
                 'payment_id' => $result->getId(),
                 'payment_status' => $result->getState(),
                 'payer_id' => $result->getPayer()->payer_info->getPayerId(),

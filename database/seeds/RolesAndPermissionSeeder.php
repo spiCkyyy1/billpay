@@ -24,5 +24,7 @@ class RolesAndPermissionSeeder extends Seeder
 
 
         Role::create(['name' => 'admin'])->givePermissionTo(Permission::all());
+        Role::create(['name' => 'company'])->givePermissionTo('transactions-nav-view');
+        Role::create(['name' => 'customer'])->givePermissionTo('transactions-nav-view');
     }
 }

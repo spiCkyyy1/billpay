@@ -10,4 +10,8 @@ class Categories extends Model
     use Notifiable;
 
     protected $fillable = ['name', 'slug', 'status'];
+
+    public function company(){
+        return $this->belongsTo(Company::class);
+    }
 }

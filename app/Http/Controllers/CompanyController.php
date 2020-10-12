@@ -18,7 +18,7 @@ class CompanyController extends Controller
 
         $companies = new \App\Company;
 
-        $companies = $companies->where(function($query) use ($request){
+        $companies = $companies->with('categories')->where(function($query) use ($request){
             $query->where('name', 'LIKE', '%'.$request->SearchQuery.'%');
             $query->orWhere('email', 'LIKE', '%'.$request->SearchQuery.'%');
         });
@@ -37,6 +37,16 @@ class CompanyController extends Controller
 
         $company->save();
 
+        $user = new \App\User;
+
+        $user = $user->create([
+            'name' => $company->name,
+            'email' => $company->email,
+            'password' => bcrypt($company->password)
+        ]);
+
+        $user->assignRole('company');
+
         $this->_helper->response()->setHttpCode(200)->send('');
     }
 
@@ -50,6 +60,12 @@ class CompanyController extends Controller
         $company->status = 0;
 
         $company->save();
+
+        $user = new \App\User;
+
+        $user = $user->where('email', $company->email);
+
+        $user->delete();
 
         $this->_helper->response()->setHttpCode(200)->send('');
     }
@@ -70,6 +86,7 @@ class CompanyController extends Controller
         $request = request();
 
         $validator = Validator::make($request->all(),[
+            'category_id' => 'bail|required|exists:categories,id',
             'name' => 'bail|required',
             'email' => 'bail|required|email|unique:companies,email',
             'password' => 'bail|required|min:6',
@@ -88,6 +105,7 @@ class CompanyController extends Controller
         $company = new \App\Company;
 
         $company->create([
+            'category_id' => $request->category_id,
             'name' => $request->name,
             'country' => $request->country,
             'state' => $request->state,

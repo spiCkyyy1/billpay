@@ -22,10 +22,6 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Interface
-    </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
     @can('acl-nav-view')
@@ -92,5 +88,6 @@
         </a>
     </li>
     @endcan
+
 </ul>
 <!-- End of Sidebar -->
