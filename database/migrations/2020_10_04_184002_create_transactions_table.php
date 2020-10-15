@@ -15,20 +15,20 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->text('payment_id');
-            $table->text('payment_status');
-            $table->string('payer_id');
-            $table->string('payer_email');
-            $table->string('payer_name');
-            $table->string('payer_country_code');
-            $table->string('transaction_amount');
-            $table->string('transaction_currency');
-            $table->string('transaction_description');
-            $table->string('merchant_id');
-            $table->string('merchant_email');
+            $table->text('payment_id')->nullable()->default(null);
+            $table->text('payment_status')->nullable()->default(null);
+            $table->string('payer_id')->nullable()->default(null);
+            $table->string('payer_email')->nullable()->default(null);
+            $table->string('payer_name')->nullable()->default(null);
+            $table->string('payer_country_code')->nullable()->default(null);
+            $table->string('transaction_amount')->nullable()->default(null);
+            $table->string('transaction_currency')->nullable()->default(null);
+            $table->string('transaction_description')->nullable()->default(null);
+            $table->string('merchant_id')->nullable()->default(null);
+            $table->string('merchant_email')->nullable()->default(null);
             $table->string('commission')->nullable()->default(null);
-            $table->string('transaction_create_time');
-            $table->string('transaction_update_time');
+            $table->string('transaction_create_time')->nullable()->default(null);
+            $table->string('transaction_update_time')->nullable()->default(null);
             $table->timestamps();
         });
     }

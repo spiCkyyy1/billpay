@@ -281,7 +281,7 @@
                         <div class="logo-wrapper">
                             <h1 class="logo-content">
                                 <strong class="logo">
-                                    <a class="logo" href="{{url('/')}}" target="_blank" title="Cameroon">
+                                    <a class="logo" href="{{url('/')}}" title="Cameroon">
                                         <img src="https://shop2motherland.com/pub/media/logo/default/mother.png"
                                              alt=""
                                              width="105" height="57"/>

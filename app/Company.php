@@ -11,7 +11,7 @@ class Company extends Model
 
     protected $fillable = ['category_id','name', 'country', 'state', 'city', 'address', 'zip_code', 'email', 'password', 'paypal_id', 'status'];
 
-    public function categories(){
+    public function category(){
         return $this->hasOne(Categories::class, 'id', 'category_id');
     }
 }

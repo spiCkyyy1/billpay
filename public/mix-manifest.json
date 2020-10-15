@@ -2,6 +2,7 @@
     "/js/admin/EmailTemplates/vue.js": "/js/admin/EmailTemplates/vue.js",
     "/js/admin/categories/vue.js": "/js/admin/categories/vue.js",
     "/js/admin/companies/vue.js": "/js/admin/companies/vue.js",
+    "/js/admin/dashboard/vue.js": "/js/admin/dashboard/vue.js",
     "/js/admin/permissions/vue.js": "/js/admin/permissions/vue.js",
     "/js/admin/roles/vue.js": "/js/admin/roles/vue.js",
     "/js/admin/transactions/vue.js": "/js/admin/transactions/vue.js",

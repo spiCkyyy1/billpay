@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
 use PayPal\Api\Item;
 use PayPal\Api\ItemList;
+use PayPal\Api\Payee;
 use PayPal\Api\Payer;
 use PayPal\Api\Payment;
 use PayPal\Api\PaymentExecution;
@@ -17,7 +20,6 @@ use PayPal\Rest\ApiContext;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
-use PayPal\Api\Payee;
 use Auth;
 class PaymentController extends Controller
 {
@@ -32,7 +34,7 @@ class PaymentController extends Controller
                 $paypal_conf['secret'])
         );
         $this->_api_context->setConfig($paypal_conf['settings']);
-        $this->_admin_commission = 1;
+        $this->_admin_commission = 1; // in percentage
     }
 
     public function payWithpaypal(Request $request)
@@ -41,50 +43,53 @@ class PaymentController extends Controller
         $payer->setPaymentMethod('paypal');
 
 
-        $item_1 = new Item();
-        $item_1->setName($request->category)/** item name **/
-        ->setCurrency('USD')
-            ->setQuantity(1)
-            ->setPrice($request->get('amount'));
+        //paying to company email address
+        $company = new \App\Company;
+
+        $company = $company->with('category')->find($request->company_id);
+
+        $payee = new Payee();
+        $payee->setEmail($company->email);
 
 
-        /** unit price **/
-        $item_list = new ItemList();
-        $item_list->setItems(array($item_1));
+//        $item_1 = new Item();
+//        $item_1->setName($company->category['name'])/** item name **/
+//        ->setCurrency('USD')
+//            ->setQuantity(1)
+//            ->setPrice($request->get('amount'));
+//
+//
+//        /** unit price **/
+//        $item_list = new ItemList();
+//        $item_list->setItems(array($item_1));
 
 
-//        $commission = ($request->amount / 100) * $this->_admin_commission;
-//        $amountToPay = $request->amount - $commission;
-//        $amount = new Amount();
-//        $amount->setCurrency('USD')
-//            ->setDetails(['handling_fee' => $commission])
-//            ->setTotal($amountToPay);
+        $commission = ($request->amount / 100) * $this->_admin_commission;
+        $amountToPay = $request->amount - $commission;
+
+        $details = new Details();
+        $details->setHandlingFee($commission)->setSubtotal($amountToPay);
+
+
         $amount = new Amount();
         $amount->setCurrency('USD')
-            ->setTotal($request->amount);
+            ->setTotal($request->amount)
+            ->setDetails($details);
 
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
-            ->setItemList($item_list)
-            ->setDescription('Transaction of '.$amount->getTotal().' '.$amount->getCurrency().'For '.$request->category);
-
+            ->setDescription('Transaction of '.$amount->getDetails()->getSubtotal().' '.$amount->getCurrency().' For '.$company->name)
+            ->setPayee($payee)
+        ->setInvoiceNumber(Carbon::now()->format('y-m-d').'-'.rand());
 
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(URL::route('status'))/** Specify return URL **/
         ->setCancelUrl(URL::route('status'));
 
-        //paying to company email address
-//        $company = new \App\Company;
-//
-//        $company = $company->find($request->company_id);
-//
-//
-//        $payee = new Payee();
-//        $payee->setEmail($company->email);
 
         $payment = new Payment();
-        $payment->setIntent('Sale')
+        $payment->setIntent('sale')
             ->setPayer($payer)
             ->setRedirectUrls($redirect_urls)
             ->setTransactions(array($transaction));
@@ -137,6 +142,7 @@ class PaymentController extends Controller
         $execution->setPayerId($request->get('PayerID'));
         /**Execute the payment **/
         $result = $payment->execute($execution, $this->_api_context);
+
         if ($result->getState() == 'approved') {
             \Session::put('success', 'Payment success');
 
@@ -151,15 +157,28 @@ class PaymentController extends Controller
                 'payer_email' => $result->getPayer()->payer_info->getEmail(),
                 'payer_name' => $result->getPayer()->payer_info->getFirstName() .' '. $result->getPayer()->payer_info->getLastName(),
                 'payer_country_code' => $result->getPayer()->payer_info->getCountryCode(),
-                'transaction_amount' => $result->getTransactions()[0]->amount->getTotal(),
+                'transaction_amount' => $result->getTransactions()[0]->getAmount()->getDetails()->getSubtotal(),
                 'transaction_currency' => $result->getTransactions()[0]->amount->getCurrency(),
                 'transaction_description' => $result->getTransactions()[0]->getDescription(),
-                'merchant_id' => $result->getTransactions()[0]->getPayee()->getMerchantId(),
-                'merchant_email' => $result->getTransactions()[0]->getPayee()->getEmail(),
-                'commission' => null,
+                'merchant_id' => $result->getTransactions()[0]->getPayee() !== null ? $result->getTransactions()[0]->getPayee()->getMerchantId() : null,
+                'merchant_email' => $result->getTransactions()[0]->getPayee() !== null ? $result->getTransactions()[0]->getPayee()->getEmail() : null,
+                'commission' => $result->getTransactions()[0]->getAmount()->getDetails()->getHandlingFee(),
                 'transaction_create_time' => $result->getCreateTime(),
                 'transaction_update_time' => $result->getUpdateTime(),
             ]);
+
+//            $data = array('name'=>env('APP_NAME'));
+//            Mail::send(['text'=>'Your transaction has been successful.'], $data, function($message) {
+//                $message->to(Auth::user()->email, Auth::user()->name)->subject
+//                ('Transaction Successful.');
+//                $message->from(env('MAIL_FROM_ADDRESS'),env('APP_NAME'));
+//            });
+//
+//            Mail::send(['text'=>'You have received a new transaction.'], $data, function($message) {
+//                $message->to(env('MAIL_FROM_ADDRESS'), env('APP_NAME'))->subject
+//                ('Transaction Received.');
+//                $message->from(env('MAIL_FROM_ADDRESS'),env('APP_NAME'));
+//            });
 
             return Redirect::route('/');
         }

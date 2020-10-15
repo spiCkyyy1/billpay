@@ -24,6 +24,7 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function(){
 
     Route::get('/dashboard', 'HomeController@index')->name('home');
+    Route::get('/dashboard/data', 'HomeController@getChartData')->name('home.chart.data');
     Route::get('/admin/users', function () {
         return view('admin.users.index');
     })->name('users');

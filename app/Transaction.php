@@ -14,6 +14,6 @@ class Transaction extends Model
         'commission', 'transaction_create_time', 'transaction_update_time'];
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id', 'user_id');
     }
 }

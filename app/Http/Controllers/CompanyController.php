@@ -113,7 +113,7 @@ class CompanyController extends Controller
             'address' => $request->address,
             'zip_code' => $request->zip_code,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
             'paypal_id' => $request->paypal_id,
             'status' => 0,
         ]);
