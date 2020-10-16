@@ -18,7 +18,7 @@ class CompanyController extends Controller
 
         $companies = new \App\Company;
 
-        $companies = $companies->with('categories')->where(function($query) use ($request){
+        $companies = $companies->with('category')->where(function($query) use ($request){
             $query->where('name', 'LIKE', '%'.$request->SearchQuery.'%');
             $query->orWhere('email', 'LIKE', '%'.$request->SearchQuery.'%');
         });

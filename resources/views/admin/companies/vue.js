@@ -6,7 +6,7 @@ new Vue({
         processing: false,
         fullscreen: false,
         timer: "",
-        fields: [{key: 'id', label: 'ID'},'name', 'country', 'state', 'city', {key: 'zip_code', label: 'Zip Code'}, 'email', {key: 'paypal_id', label: 'Paypal ID'},
+        fields: [{key: 'id', label: 'ID'},'name',{key: 'category_id', label: 'Category'}, 'country', 'state', 'city', {key: 'zip_code', label: 'Zip Code'}, 'email', {key: 'paypal_id', label: 'Paypal ID'},
             'status',  'Actions'],
         getCompaniesUrl: App_url + '/all',
         deleteCompanyUrl: App_url + '/delete',

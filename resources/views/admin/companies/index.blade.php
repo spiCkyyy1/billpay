@@ -52,15 +52,20 @@
                                     </td>
                                 </tr>
                             </template>
-                            <template slot="HEAD_name" slot-scope="data">
+                            <template v-slot:cell(HEAD_name)="data">
                                 <span class="m-0 pl-2">@{{data.label}}</span>
                             </template>
-                            <template slot="FOOT_name" slot-scope="data">
+                            <template v-slot:cell(FOOT_name)="data">
                                 <span class="m-0 pl-2">@{{data.label}}</span>
                             </template>
-                            <template slot="name" slot-scope="data">
+                            <template v-slot:cell(name)="data">
                                 <span class="m-0 pl-2">@{{data.item.name}}</span>
                             </template>
+
+                            <template v-slot:cell(category_id)="data">
+                                <span class="m-0 pl-2 badge badge-primary">@{{ data.item.category.name }}</span>
+                            </template>
+
 
                             <template v-slot:cell(status)="data">
                                 <span class="m-0 pl-2 badge badge-success" v-if="data.item.status == '1'">Approved</span>

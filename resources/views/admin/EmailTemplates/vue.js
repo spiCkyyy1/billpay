@@ -35,6 +35,9 @@ new Vue({
     watch: {
         'emailTemplatesMeta.current_page': function (val) {
             this.loadEmailTemplatesPaginatedData();
+        },
+        'name': function (val){
+            this.slug = this.sanitizeTitle(val);
         }
     },
     methods: {
@@ -44,6 +47,14 @@ new Vue({
         getOrderByResult: function(orderBy){
             this.orderBy = orderBy;
             this.applyEmailTemplatesFilter(false);
+        },
+        sanitizeTitle: function(str) {
+            var $slug = '';
+            var trimmed = $.trim(str);
+            $slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
+            replace(/-+/g, '-').
+            replace(/^-|-$/g, '');
+            return $slug.toLowerCase();
         },
         resetFilter() {
             this.emailTemplatesTable.searchQuery = "";

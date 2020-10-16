@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="text" id="defaultRegisterFormEmail" class="form-control" v-model="slug" placeholder="Slug">
+                                <input type="text" id="defaultRegisterFormEmail" class="form-control" v-model="slug" placeholder="Slug" disabled>
                                 <div v-for="(value, name, index) in errorMessages" style="color: red">
                                     <label v-if="name == 'slug'">@{{value[0]}}</label>
                                 </div>
@@ -184,7 +184,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="text" id="defaultRegisterFormEmail" class="form-control" v-model="slug" placeholder="Slug">
+                                <input type="text" id="defaultRegisterFormEmail" class="form-control" v-model="slug" placeholder="Slug" disabled>
                                 <div v-for="(value, name, index) in errorMessages" style="color: red">
                                     <label v-if="name == 'slug'">@{{value[0]}}</label>
                                 </div>
