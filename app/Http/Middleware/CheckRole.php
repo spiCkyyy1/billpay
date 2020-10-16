@@ -16,11 +16,8 @@ class CheckRole
     public function handle($request, Closure $next)
     {
         if($request->user()->hasRole('admin')){
-            return redirect()->route('home');
+            return redirect('dashboard');
         }
-
-        if($request->user()->hasRole('companies')){
-            return redirect()->route('home');
-        }
+        return $next($request);
     }
 }
