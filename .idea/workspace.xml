@@ -22,10 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b95d2faa-b2ae-4269-9f88-93caa25e58c1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/navigation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/navigation.blade.php" afterDir="false" />
-    </list>
+    <list default="true" id="b95d2faa-b2ae-4269-9f88-93caa25e58c1" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -198,6 +195,7 @@
       <workItem from="1602322007303" duration="599000" />
       <workItem from="1602527186983" duration="13657000" />
       <workItem from="1602785721945" duration="18356000" />
+      <workItem from="1602844153097" duration="602000" />
     </task>
     <servers />
   </component>
@@ -214,6 +212,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="693" y="310" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1601921513255">
