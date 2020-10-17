@@ -40,8 +40,8 @@ class CompanyController extends Controller
         $user = new \App\User;
 
         if($company->email){
-            $user = $user->where('email', $company->email)->count();
-            if($user > 0){
+            $userWithCount = $user->where('email', $company->email)->count();
+            if($userWithCount > 0){
                 $this->_helper->response()->setMessage('Email should be unique')->setCode(219)->send('');
             }
         }
@@ -71,8 +71,8 @@ class CompanyController extends Controller
         $user = new \App\User;
 
         if($company->email){
-            $user = $user->where('email', $company->email)->count();
-            if($user > 0){
+            $userWithCount = $user->where('email', $company->email)->count();
+            if($userWithCount > 0){
                 $this->_helper->response()->setMessage('Email should be unique')->setCode(219)->send('');
             }
         }
