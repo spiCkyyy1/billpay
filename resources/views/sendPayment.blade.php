@@ -3,7 +3,7 @@
 @section('content')
 {{--<div class="tab-pane @if(session('success') || session('error')) active @endif" id="manual_recovery"--}}
 {{--     role="tabpanel" aria-labelledby="manual-recovery">--}}
-    <div class="container-fluid">
+    <div class="container">
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong> {{session('success')}}</strong>

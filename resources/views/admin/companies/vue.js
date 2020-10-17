@@ -66,6 +66,7 @@ new Vue({
             axios.post(this.approveCompanyUrl, {
                 companyId: companyId
             }).then(response => {
+                console.log(response);
                 if(response){
                     if (response.data.msg == 'Success') {
                         Swal.fire(
@@ -74,6 +75,13 @@ new Vue({
                             'success'
                         );
                         this.applyCompaniesFilter(false);
+                    }
+                    if(response.data.code == 219){
+                        Swal.fire(
+                            'Sorry!',
+                            response.data.msg,
+                            'error'
+                        );
                     }
                 }
             });

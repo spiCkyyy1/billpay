@@ -1,4 +1,4 @@
-<footer class="page-footer">
+<footer class="page-footer" style="width: 100% !important;">
     <div class="footer footer-wrapper">
         <div class="footer-container footer-style-9">
             <div class="footer-wrapper">

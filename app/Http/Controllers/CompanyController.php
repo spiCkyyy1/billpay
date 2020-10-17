@@ -39,6 +39,14 @@ class CompanyController extends Controller
 
         $user = new \App\User;
 
+        if($company->email){
+            $user = $user->where('email', $company->email)->count();
+            if($user > 0){
+                $this->_helper->response()->setMessage('Email should be unique')->setCode(219)->send('');
+            }
+            $this->_helper->response()->setMessage('Email should be unique')->setCode(219)->send('');
+        }
+
         $user = $user->create([
             'name' => $company->name,
             'email' => $company->email,
@@ -62,6 +70,13 @@ class CompanyController extends Controller
         $company->save();
 
         $user = new \App\User;
+
+        if($company->email){
+            $user = $user->where('email', $company->email)->count();
+            if($user > 0){
+                $this->_helper->response()->setMessage('Email should be unique')->setCode(219)->send('');
+            }
+        }
 
         $user = $user->where('email', $company->email);
 

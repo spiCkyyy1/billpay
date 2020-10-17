@@ -1,4 +1,4 @@
-<div class="header-container header-style-9">
+<div class="header-container header-style-9" style="width: 100% !important;">
     <div class="header-top">
         <div class="container">
             <div class="row row-topheader">
