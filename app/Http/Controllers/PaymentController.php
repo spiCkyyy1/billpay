@@ -176,30 +176,28 @@ class PaymentController extends Controller
                 'transaction_update_time' => $result->getUpdateTime(),
             ]);
 
-//            $emailTemplate = new \App\EmailTemplate;
-//            $emailTemplate = $emailTemplate->where('slug', 'transaction-successful')->where('status', 1)->first();
-//            $subject = 'Transaction Successful';
-//            $content = 'Your transaction has been successful.';
-//            if($emailTemplate !== null){
-//                $subject = $emailTemplate->subject;
-//                $content = $emailTemplate->body;
-//            }
+            $emailTemplate = new \App\EmailTemplate;
+            $emailTemplate = $emailTemplate->where('slug', 'transaction-successful')->where('status', 1)->first();
+            Mail::to(Auth::user()->email)->send(new \App\Mail\Transaction($emailTemplate->subject, $emailTemplate->body, env('MAIL_FROM_ADDRESS')));
+
 //            $data = array('name'=>env('APP_NAME'));
 //            Mail::send(['text'=>$content], $data, function($message) use ($subject) {
 //                $message->to(Auth::user()->email, Auth::user()->name)->subject
 //                ($subject);
 //                $message->from(env('MAIL_FROM_ADDRESS'),env('APP_NAME'));
 //            });
-//
-//            $adminEmailTemplate = new \App\EmailTemplate;
-//            $adminEmailTemplate = $adminEmailTemplate->where('slug', 'transaction-received')->where('status', 1)->first();
+
+            $adminEmailTemplate = new \App\EmailTemplate;
+            $adminEmailTemplate = $adminEmailTemplate->where('slug', 'transaction-received')->where('status', 1)->first();
 //            $adminSubject = 'Transaction Received.';
 //            $adminContent = 'You have received a new transaction.';
 //            if($adminEmailTemplate !== null){
 //                $adminSubject = $adminEmailTemplate->subject;
 //                $adminContent = $adminEmailTemplate->body;
 //            }
-//
+
+            Mail::to('admin@shop2motherland.com')->send(new \App\Mail\Transaction($emailTemplate->subject, $emailTemplate->body, env('MAIL_FROM_ADDRESS')));
+
 //            Mail::send(['text'=>$adminContent], $data, function($message) use ($adminSubject) {
 //                $message->to(env('MAIL_FROM_ADDRESS'), env('APP_NAME'))->subject
 //                ($adminSubject);
