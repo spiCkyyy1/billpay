@@ -19,7 +19,12 @@ new Vue({
             searching: false,
         },
         orderBy: 'DESC',
-        transactionsMeta: {}
+        transactionsMeta: {},
+        commissionFun: 'Add',
+        commission: '',
+        commissionId: '',
+        getCommissionUrl: App_url + '/commission',
+        updateCommissionUrl : App_url + '/update/commission'
     },
     mounted() {
         this.applyFilter();
@@ -41,6 +46,44 @@ new Vue({
             this.transactionTable.searchQuery = "";
             this.orderBy = 'DESC';
             this.applyFilter();
+        },
+        showCommissionModal: function(){
+            $("#commissionModal").modal('show');
+            axios.get(this.getCommissionUrl).then(response => {
+                if(response.data.msg == 'Success'){
+                    if(response.data.data){
+                        this.commission = response.data.data.value;
+                        this.commissionId = response.data.data.id;
+                    }
+                }
+            })
+        },
+        addCommission: function(){
+            axios.post(this.updateCommissionUrl, {id: this.commissionId, value: this.commission})
+                .then(response => {
+                    if(response.data.msg == 'Commission Set Successfully!'){
+                        $("#commissionModal").modal('hide');
+                        Swal.fire(
+                            'Success!',
+                            response.data.msg,
+                            'success'
+                        );
+                        this.applyFilter();
+                    }else{
+                        Swal.fire(
+                            'Sorry!',
+                            'Something went wrong',
+                            'error'
+                        );
+                    }
+                }).catch(error => {
+                    console.log(error);
+                Swal.fire(
+                    'Sorry!',
+                    'Something went wrong',
+                    'error'
+                );
+            });
         },
         applyFilter: function (url = false) {
             this.processing = true;

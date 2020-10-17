@@ -106,6 +106,31 @@ Route::middleware(['auth'])->group(function(){
 
     });
 
+    Route::get('/transactions/commission', function(){
+        $request = request();
+        $helper = new \App\Helpers\Helper();
+        $commission = new \App\AdminCommission();
+        $helper->response()->setHttpCode(200)->send($commission->first());
+    });
+
+    Route::post('/transactions/update/commission', function(){
+        $request = request();
+        $helper = new \App\Helpers\Helper();
+        $commission = new \App\AdminCommission();
+        $function = 'create';
+        if($request->has('id') && $request->id !== null){
+            $commission = $commission->find($request->id);
+            $commission->value = $request->value;
+            $commission->save();
+        }else{
+            $commission->create([
+                'value' => $request->value
+            ]);
+        }
+        $helper->response()->setHttpCode(200)->setMessage('Commission Set Successfully!')->send('');
+
+    });
+
     Route::get('/send/payment', function(){
         $companies = new \App\Company;
 //    $categories = new \App\Categories;

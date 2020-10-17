@@ -33,8 +33,17 @@ class PaymentController extends Controller
                 $paypal_conf['client_id'],
                 $paypal_conf['secret'])
         );
+
+
         $this->_api_context->setConfig($paypal_conf['settings']);
+
         $this->_admin_commission = 1; // in percentage
+
+        $commission = new \App\AdminCommission;
+        $commission = $commission->first();
+        if($commission !== null){
+            $this->_admin_commission = $commission->value; // in percentage
+        }
     }
 
     public function payWithpaypal(Request $request)

@@ -31,7 +31,15 @@
                                 <tr>
                                     <td colspan="12">
                                         <div class="p-0 m-0 pt-2 pb-2 row justify-content-between col-12">
-                                            <div class="col-4 text-center mt-2">
+                                            @role('admin')
+                                            <div class="col float mr-2">
+                                                <button @click="showCommissionModal" title="Set Commission"
+                                                        class="btn btn-outline-dark btn-sm mt-0" >
+                                                <span class="fa fa-plus"></span> Set Commission
+                                                </button>
+                                            </div>
+                                            @endrole
+                                            <div class="col text-center mt-2">
                                                 <div class="custom-control custom-radio custom-control-inline">
                                                     <input type="radio" id="orderbyasc" name="customRadioInline1"
                                                            class="custom-control-input" value="ASC" v-model="orderBy" @click="getOrderByResult('ASC')">
@@ -44,10 +52,10 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col">
                                                 <button type="button" class="btn btn-dark btn-sm mt-0 px-3 mx-2" title="Reset Filter" @click="resetFilter()"><span class="fa fa-undo"></span></button>
                                             </div>
-                                            <div class="col-4 float-right mt-2">
+                                            <div class="col float-right mt-2">
                                                 <span class="fa-li fa fa-spinner fa-spin mt-2" v-if="processing"></span>
                                                 <input @keyup="applyFilter(false)" v-model="transactionTable.searchQuery" type="text" class="form-control form-control-sm" placeholder="Search by Payer Name">
                                             </div>
@@ -85,6 +93,25 @@
                             </div>
                         </div>
                         {{-- End Row --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="commissionModal" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="my-modal-title">Set Commission Per Transaction</h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" id="defaultRegisterFormFirstName" class="form-control" v-model="commission"
+                                   placeholder="Name">
+                        </div>
+                        <button :disabled="processing" class="btn btn-info my-4 btn-block" type="button" @click="addCommission">@{{ commissionFun }} Commission</button>
                     </div>
                 </div>
             </div>
