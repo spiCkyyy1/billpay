@@ -176,16 +176,33 @@ class PaymentController extends Controller
                 'transaction_update_time' => $result->getUpdateTime(),
             ]);
 
+//            $emailTemplate = new \App\EmailTemplate;
+//            $emailTemplate = $emailTemplate->where('slug', 'transaction-successful')->where('status', 1)->first();
+//            $subject = 'Transaction Successful';
+//            $content = 'Your transaction has been successful.';
+//            if($emailTemplate !== null){
+//                $subject = $emailTemplate->subject;
+//                $content = $emailTemplate->body;
+//            }
 //            $data = array('name'=>env('APP_NAME'));
-//            Mail::send(['text'=>'Your transaction has been successful.'], $data, function($message) {
+//            Mail::send(['text'=>$content], $data, function($message) use ($subject) {
 //                $message->to(Auth::user()->email, Auth::user()->name)->subject
-//                ('Transaction Successful.');
+//                ($subject);
 //                $message->from(env('MAIL_FROM_ADDRESS'),env('APP_NAME'));
 //            });
 //
-//            Mail::send(['text'=>'You have received a new transaction.'], $data, function($message) {
+//            $adminEmailTemplate = new \App\EmailTemplate;
+//            $adminEmailTemplate = $adminEmailTemplate->where('slug', 'transaction-received')->where('status', 1)->first();
+//            $adminSubject = 'Transaction Received.';
+//            $adminContent = 'You have received a new transaction.';
+//            if($adminEmailTemplate !== null){
+//                $adminSubject = $adminEmailTemplate->subject;
+//                $adminContent = $adminEmailTemplate->body;
+//            }
+//
+//            Mail::send(['text'=>$adminContent], $data, function($message) use ($adminSubject) {
 //                $message->to(env('MAIL_FROM_ADDRESS'), env('APP_NAME'))->subject
-//                ('Transaction Received.');
+//                ($adminSubject);
 //                $message->from(env('MAIL_FROM_ADDRESS'),env('APP_NAME'));
 //            });
 
