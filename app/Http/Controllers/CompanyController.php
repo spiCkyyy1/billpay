@@ -44,7 +44,6 @@ class CompanyController extends Controller
             if($user > 0){
                 $this->_helper->response()->setMessage('Email should be unique')->setCode(219)->send('');
             }
-            $this->_helper->response()->setMessage('Email should be unique')->setCode(219)->send('');
         }
 
         $user = $user->create([
