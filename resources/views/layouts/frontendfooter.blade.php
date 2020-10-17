@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="footer-middle">
-                    <div class="row">
+                    <div class="row" style="display: none">
                         <div class="col-lg-4 social-wrapper">
                             <div class="socials-wrap">
                                 <div class="title-follow">Follow Us</div>

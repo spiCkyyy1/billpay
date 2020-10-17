@@ -23,7 +23,7 @@
             </div>
             @php \Illuminate\Support\Facades\Session::forget('error'); @endphp
         @endif
-        <div>
+        <div class="container">
             <form method="POST" id="payment-form"
                   action="{!! URL::to('paypal') !!}">
                 @csrf

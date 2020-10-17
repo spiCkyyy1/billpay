@@ -214,7 +214,10 @@
                     </button>
                 </div>
             @endif
-            <div>
+            <div class="container">
+                <div class="form-row">
+                    <h2>Register Company</h2>
+                </div>
                 <form method="POST" action="{{route('company.add')}}">
                     @csrf
                     <div class="form-row">
@@ -561,7 +564,7 @@
                         </div>
                     <div class="form-row">
                         <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary btn-sm">Create Company</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Register Company</button>
                         </div>
                     </div>
                 </form>
