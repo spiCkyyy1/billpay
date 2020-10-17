@@ -218,7 +218,7 @@
                 <form method="POST" action="{{route('company.add')}}">
                     @csrf
                     <div class="form-row">
-                        <div class="form-group col-md-12">
+                        <div class=" col-md-4">
                             <label for="name">Company Name</label>
                             <input type="text" name="name" id="name" class="form-control form-control-sm"
                                    required value="{{old('name')}}" placeholder="Company Name">
@@ -226,9 +226,7 @@
                             <span class="errorMessage">{{ $message }}</span>
                             @enderror
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class=" col-md-4">
                             <label for="email">Email</label>
                             <input type="email" class="form-control form-control-sm" id="email" name="email"
                                    placeholder="Email" required value="{{old('email')}}">
@@ -236,7 +234,7 @@
                             <span class="errorMessage">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class=" col-md-4">
                             <label for="password">Password</label>
                             <input type="password" class="form-control form-control-sm" id="password"
                                    name="password" placeholder="Password" required>
@@ -259,18 +257,27 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" name="address"
-                               placeholder="Enter your address" required value="{{old('address')}}">
-                        @error('address')
-                        <span class="errorMessage">{{ $message }}</span>
-                        @enderror
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" name="address"
+                                   placeholder="Enter your address" required value="{{old('address')}}">
+                            @error('address')
+                            <span class="errorMessage">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="paypal_id">PayPal ID</label>
+                            <input type="text" class="form-control form-control-sm" name="paypal_id" id="paypal_id"
+                                   placeholder="Company Paypal ID" required value="{{old('paypal_id')}}">
+                            @error('paypal_id')
+                            <span class="errorMessage">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <div class="form-group col-md-6">
+                            <div class="col-md-4">
                                 <label for="country">Country</label>
                                     <select id="country" name="country" value="{{old('country')}}" required>
                                         <option value="Afganistan">Afghanistan</option>
@@ -526,26 +533,15 @@
                                     </span>
                                     @enderror
                             </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="state">State</label>
-                            <input type="text" name="state" id="state" class="form-control form-control-sm"
-                                   required value="{{old('state')}}" placeholder="Company state">
-                            @error('state')
-                            <span class="errorMessage">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="city">City</label>
-                            <input type="text" class="form-control form-control-sm" id="city" name="city"
-                                   required value="{{old('city')}}" placeholder="Company City">
-                            @error('city')
-                            <span class="errorMessage">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="form-group col-md-6">
+                            <div class="col-md-2">
+                                <label for="state">State</label>
+                                <input type="text" name="state" id="state" class="form-control form-control-sm"
+                                       required value="{{old('state')}}" placeholder="Company state">
+                                @error('state')
+                                <span class="errorMessage">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        <div class="col-md-2">
                             <label for="zip">Zip Code</label>
                             <input type="text" name="zip_code" id="zip_code"
                                    class="form-control form-control-sm" placeholder="Company Zip Code" required
@@ -554,16 +550,20 @@
                             <span class="errorMessage">{{ $message }}</span>
                             @enderror
                         </div>
+                            <div class="col-md-4">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control form-control-sm" id="city" name="city"
+                                       required value="{{old('city')}}" placeholder="Company City">
+                                @error('city')
+                                <span class="errorMessage">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    <div class="form-row">
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary btn-sm">Create Company</button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="paypal_id">PayPal ID</label>
-                        <input type="text" class="form-control form-control-sm" name="paypal_id" id="paypal_id"
-                               placeholder="Company Paypal ID" required value="{{old('paypal_id')}}">
-                        @error('paypal_id')
-                        <span class="errorMessage">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create Company</button>
                 </form>
             </div>
         </div>
