@@ -9,5 +9,6 @@
     "/js/admin/users/vue.js": "/js/admin/users/vue.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/app-vue.js": "/js/app-vue.js"
+    "/js/app-vue.js": "/js/app-vue.js",
+    "/js/sendpayment.js": "/js/sendpayment.js"
 }

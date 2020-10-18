@@ -23,9 +23,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b95d2faa-b2ae-4269-9f88-93caa25e58c1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/resources/views/sendpayment.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/company/add.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/company/add.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/frontendfooter.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/frontendfooter.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/admin/EmailTemplates/vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/admin/EmailTemplates/vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/admin/categories/vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/admin/categories/vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/admin/companies/vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/admin/companies/vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/admin/dashboard/vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/admin/dashboard/vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/admin/permissions/vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/admin/permissions/vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/admin/roles/vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/admin/roles/vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/admin/transactions/vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/admin/transactions/vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/admin/users/vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/admin/users/vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app-vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app-vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/frontend.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/frontend.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/sendPayment.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/sendPayment.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.mix.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.mix.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +214,7 @@
       <workItem from="1602322007303" duration="599000" />
       <workItem from="1602527186983" duration="13657000" />
       <workItem from="1602785721945" duration="18356000" />
-      <workItem from="1602844153097" duration="15507000" />
+      <workItem from="1602844153097" duration="18640000" />
     </task>
     <servers />
   </component>
@@ -235,17 +250,21 @@
       <screen x="0" y="24" width="1920" height="1056" />
     </state>
     <state width="590" height="446" key="SwitcherDM/0.24.1920.1056@0.24.1920.1056" timestamp="1601927199570" />
+    <state x="570" y="165" width="770" height="780" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1603024571640">
+      <screen x="0" y="24" width="1920" height="1056" />
+    </state>
+    <state x="570" y="165" width="770" height="780" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.24.1920.1056@0.24.1920.1056" timestamp="1603024571640" />
     <state x="650" y="291" width="730" height="522" key="find.popup" timestamp="1602926121213">
       <screen x="0" y="24" width="1920" height="1056" />
     </state>
     <state x="650" y="291" width="730" height="522" key="find.popup/0.24.1920.1056@0.24.1920.1056" timestamp="1602926121213" />
-    <state x="624" y="251" key="run.anything.popup" timestamp="1602789583027">
+    <state x="624" y="251" key="run.anything.popup" timestamp="1603025913620">
       <screen x="0" y="24" width="1920" height="1056" />
     </state>
-    <state x="624" y="251" key="run.anything.popup/0.24.1920.1056@0.24.1920.1056" timestamp="1602789583027" />
-    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1602936323553">
+    <state x="624" y="251" key="run.anything.popup/0.24.1920.1056@0.24.1920.1056" timestamp="1603025913620" />
+    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1603025334787">
       <screen x="0" y="24" width="1920" height="1056" />
     </state>
-    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup/0.24.1920.1056@0.24.1920.1056" timestamp="1602936323553" />
+    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup/0.24.1920.1056@0.24.1920.1056" timestamp="1603025334787" />
   </component>
 </project>

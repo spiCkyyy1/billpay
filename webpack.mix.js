@@ -23,5 +23,6 @@ mix.js('resources/views/admin/permissions/vue.js', 'public/js/admin/permissions/
 mix.js('resources/views/admin/roles/vue.js', 'public/js/admin/roles/vue.js');
 mix.js('resources/views/admin/transactions/vue.js', 'public/js/admin/transactions/vue.js');
 mix.js('resources/views/admin/dashboard/vue.js', 'public/js/admin/dashboard/vue.js');
+mix.js('resources/views/sendpayment.js', 'public/js/sendpayment.js');
 
 mix.sass('resources/sass/app.scss', 'public/css/app.css');

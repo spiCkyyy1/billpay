@@ -139,6 +139,18 @@ Route::middleware(['auth'])->group(function(){
         return view('sendPayment', compact('companies'));
     })->name('send.payment');
 
+    Route::post('/send/payment/companies', function(){
+       $country = request()->country;
+
+        $helper = new \App\Helpers\Helper();
+
+       $companies = new \App\Company;
+
+       $companies = $companies->where('country', $country);
+
+       $helper->response()->send($companies->get());
+    });
+
     Route::post('/company/save', 'CompanyController@store')->name('company.add');
 
     Route::post('paypal', 'PaymentController@payWithpaypal')->name('paywithpaypal');

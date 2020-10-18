@@ -81,103 +81,55 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/views/admin/dashboard/vue.js":
-/*!************************************************!*\
-  !*** ./resources/views/admin/dashboard/vue.js ***!
-  \************************************************/
+/***/ "./resources/views/sendpayment.js":
+/*!****************************************!*\
+  !*** ./resources/views/sendpayment.js ***!
+  \****************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 new Vue({
-  el: '#dashboard_container',
+  el: '#sendpayment_container',
   data: {
-    showCompaniesChart: false,
-    getChartDataUrl: App_url + '/data'
+    disableCompanySelect: true,
+    disableAmount: true,
+    selectedCountry: 'Afganistan',
+    getCompaniesUrl: App_url + '/companies',
+    companies: [],
+    selectedCompany: '',
+    amount: '',
+    disableBtn: true
   },
-  mounted: function mounted() {
-    this.getChartData();
+  watch: {
+    'selectedCompany': function selectedCompany(val) {
+      if (val !== null || val !== '') {
+        this.disableAmount = false;
+      }
+    },
+    'amount': function amount(val) {
+      if (val !== '' || val !== null) {
+        this.disableBtn = false;
+      }
+    }
   },
   methods: {
-    getChartData: function getChartData() {
+    getCompanyCountires: function getCompanyCountires() {
       var _this = this;
 
-      axios.get(this.getChartDataUrl).then(function (response) {
-        _this.showCompaniesChart = response.data.showCompaniesChart;
-
-        if (_this.showCompaniesChart == true) {
-          _this.companiesChartData(response.data.companies);
+      axios.post(this.getCompaniesUrl, {
+        country: this.selectedCountry
+      }).then(function (response) {
+        if (response.data.msg == 'Success') {
+          _this.companies = response.data.data;
+          _this.disableCompanySelect = false;
         }
-
-        _this.transactionsChartData(response.data.transactions);
       })["catch"](function (error) {
         console.log(error);
-      });
-    },
-    transactionsChartData: function transactionsChartData(transactions) {
-      var ctx = document.getElementById('transactions').getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          datasets: [{
-            label: '# of Transactions',
-            data: Object.values(transactions),
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
-            }]
-          }
-        }
-      });
-    },
-    companiesChartData: function companiesChartData(companies) {
-      var ctx = document.getElementById('companies').getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          datasets: [{
-            label: '# of companies',
-            data: Object.values(companies),
-            // backgroundColor: [
-            //     'rgba(255, 99, 132, 0.2)',
-            //     'rgba(54, 162, 235, 0.2)',
-            //     'rgba(255, 206, 86, 0.2)',
-            //     'rgba(75, 192, 192, 0.2)',
-            //     'rgba(153, 102, 255, 0.2)',
-            //     'rgba(255, 159, 64, 0.2)'
-            // ],
-            // borderColor: [
-            //     'rgba(255, 99, 132, 1)',
-            //     'rgba(54, 162, 235, 1)',
-            //     'rgba(255, 206, 86, 1)',
-            //     'rgba(75, 192, 192, 1)',
-            //     'rgba(153, 102, 255, 1)',
-            //     'rgba(255, 159, 64, 1)'
-            // ],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
-            }]
-          }
-        }
       });
     }
   }
@@ -185,14 +137,14 @@ new Vue({
 
 /***/ }),
 
-/***/ 9:
-/*!******************************************************!*\
-  !*** multi ./resources/views/admin/dashboard/vue.js ***!
-  \******************************************************/
+/***/ 10:
+/*!**********************************************!*\
+  !*** multi ./resources/views/sendpayment.js ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/Paybill/resources/views/admin/dashboard/vue.js */"./resources/views/admin/dashboard/vue.js");
+module.exports = __webpack_require__(/*! /var/www/html/Paybill/resources/views/sendpayment.js */"./resources/views/sendpayment.js");
 
 
 /***/ })
