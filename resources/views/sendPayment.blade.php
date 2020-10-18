@@ -288,7 +288,7 @@
                             <option value="Zaire">Zaire</option>
                             <option value="Zambia">Zambia</option>
                             <option value="Zimbabwe">Zimbabwe</option>
-                        </select @select>
+                        </select>
                         @error('country')
                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

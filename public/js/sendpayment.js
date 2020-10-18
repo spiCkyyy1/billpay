@@ -106,6 +106,11 @@ new Vue({
     disableBtn: true
   },
   watch: {
+    'selectedCountry': function selectedCountry(val) {
+      if (this.selectedCompany != null || this.selectedCountry !== '') {
+        this.disableAmount = false;
+      }
+    },
     'selectedCompany': function selectedCompany(val) {
       if (val !== null || val !== '') {
         this.disableAmount = false;

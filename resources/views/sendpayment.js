@@ -11,6 +11,11 @@ new Vue({
         disableBtn: true,
     },
     watch: {
+        'selectedCountry': function (val){
+          if(this.selectedCompany != null || this.selectedCountry !== ''){
+              this.disableAmount = false;
+          }
+        },
         'selectedCompany': function (val){
             if(val !== null || val !== ''){
                 this.disableAmount = false;
