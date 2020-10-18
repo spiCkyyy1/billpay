@@ -41,6 +41,7 @@
                     <div class="col-md-12">
                         <label for="country">Country</label>
                         <select id="country" name="country" v-model="selectedCountry" required @change="getCompanyCountires">
+                            <option value="" disabled>---</option>
                             <option value="Afganistan">Afghanistan</option>
                             <option value="Albania">Albania</option>
                             <option value="Algeria">Algeria</option>

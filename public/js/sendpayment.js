@@ -98,7 +98,7 @@ new Vue({
   data: {
     disableCompanySelect: true,
     disableAmount: true,
-    selectedCountry: 'Afganistan',
+    selectedCountry: '',
     getCompaniesUrl: App_url + '/companies',
     companies: [],
     selectedCompany: '',
@@ -125,8 +125,14 @@ new Vue({
         country: this.selectedCountry
       }).then(function (response) {
         if (response.data.msg == 'Success') {
-          _this.companies = response.data.data;
-          _this.disableCompanySelect = false;
+          if (response.data.data.length > 0) {
+            _this.companies = response.data.data;
+            _this.disableCompanySelect = false;
+          } else {
+            _this.companies = [];
+            _this.disableCompanySelect = true;
+            _this.disableAmount = true;
+          }
         }
       })["catch"](function (error) {
         console.log(error);

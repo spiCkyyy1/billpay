@@ -3,7 +3,7 @@ new Vue({
     data: {
         disableCompanySelect: true,
         disableAmount: true,
-        selectedCountry: 'Afganistan',
+        selectedCountry: '',
         getCompaniesUrl: App_url + '/companies',
         companies: [],
         selectedCompany: '',
@@ -27,8 +27,14 @@ new Vue({
             axios.post(this.getCompaniesUrl, {country: this.selectedCountry})
                 .then(response => {
                     if(response.data.msg == 'Success'){
-                        this.companies = response.data.data;
-                        this.disableCompanySelect = false;
+                        if(response.data.data.length > 0){
+                            this.companies = response.data.data;
+                            this.disableCompanySelect = false;
+                        }else{
+                            this.companies = [];
+                            this.disableCompanySelect = true;
+                            this.disableAmount = true;
+                        }
                     }
                 }).catch(error => {
                     console.log(error);
